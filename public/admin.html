@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<style>
+body { font-family: Arial; padding:20px; background:#111; color:white; }
+.card { background:#222; padding:15px; margin:10px 0; border-radius:10px; }
+button { padding:5px 10px; cursor:pointer; }
+</style>
+
+</head>
+
+<body>
+
+<h1>📊 Bookings Dashboard</h1>
+
+<div id="list"></div>
+
+<script>
+async function loadBookings(){
+const res = await fetch("/api/bookings");
+const data = await res.json();
+
+document.getElementById("list").innerHTML =
+data.map(b => `
+<div class="card">
+<h3>${b.name}</h3>
+<p>${b.phone} | ${b.email}</p>
+<p>${b.carType} | ${b.serviceType}</p>
+<p>${b.date} ${b.time}</p>
+<p>${b.addons}</p>
+
+<button onclick="deleteBooking(${b.id})">Delete</button>
+</div>
+`).join("");
+}
+
+async function deleteBooking(id){
+await fetch("/api/bookings/" + id, { method: "DELETE" });
+loadBookings();
+}
+
+loadBookings();
+setInterval(loadBookings, 5000);
+</script>
+
+</body>
+</html>

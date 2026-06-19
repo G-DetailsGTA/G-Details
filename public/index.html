@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G-DETAILS GTA</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18224384234"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-18224384234');
+</script>
+
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="hero">
+
+<video autoplay muted loop playsinline class="bg-video">
+<source src="videos/video1.mp4">
+</video>
+
+<div class="overlay"></div>
+
+<header class="nav">
+<div class="logo-area">
+<img src="images/logo.png" class="logo">
+<h2>G-DETAILS</h2>
+</div>
+
+<nav>
+<a href="#services">Services</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Book</a>
+<a href="admin.html">Admin</a>
+</nav>
+</header>
+
+<div class="hero-text">
+<h1>Premium Mobile Detailing</h1>
+<p>Luxury Car Care Across GTA</p>
+<a href="#services" class="btn">View Services</a>
+</div>
+
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section">
+
+<h2 class="title">Services & Pricing</h2>
+
+<div class="cards">
+
+<!-- INTERIOR -->
+<div class="glass">
+
+<h3>Interior / Deep Interior</h3>
+
+<p class="price">Sedan $145 | SUV $165 | Truck $185</p>
+
+<h4>Includes</h4>
+<ul>
+<li>Full Vacuum</li>
+<li>Interior Wipe Down</li>
+<li>Glass Cleaning</li>
+<li>Steam Cleaning</li>
+<li>Shampoo & Extraction</li>
+<li>Leather Cleaning</li>
+<li>Stain Removal</li>
+<li>Pet Hair Removal</li>
+<li>Odor Removal (Ozone)</li>
+</ul>
+
+</div>
+
+<!-- EXTERIOR -->
+<div class="glass">
+
+<h3>Exterior Detail</h3>
+
+<p class="price">Sedan $90 | SUV $105 | Truck/Van $120</p>
+
+<h4>Includes</h4>
+<ul>
+<li>Rim Detail</li>
+<li>Tire Shine</li>
+<li>2 Bucket Hand Wash</li>
+<li>Window Cleaning</li>
+</ul>
+
+</div>
+
+</div>
+
+<!-- ADD ONS SECTION -->
+<div class="addons-section">
+
+<h2 class="title">Add-On Services</h2>
+
+<div class="addons">
+
+<span>Pet Hair Removal — from $25</span>
+<span>Odor Removal — from $65/hr</span>
+<span>Clay Bar Treatment — from $40</span>
+<span>Headlight Restoration — from $45</span>
+<span>Wax Protection — from $35</span>
+
+</div>
+
+</div>
+
+<!-- AREAS -->
+<div class="areas">
+
+<h2 class="title">Service Areas</h2>
+
+<p>
+Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton • Pickering • Bolton • Hamilton • King City • Aurora
+</p>
+
+</div>
+
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section">
+
+<h2 class="title">Gallery</h2>
+
+<!-- IMAGES -->
+<div class="gallery-grid">
+
+<img src="images/car1.jpg" onclick="openImg(this.src)">
+<img src="images/car2.jpg" onclick="openImg(this.src)">
+<img src="images/car3.jpg" onclick="openImg(this.src)">
+<img src="images/car4.jpg" onclick="openImg(this.src)">
+
+</div>
+
+<!-- VIDEOS -->
+<h2 class="title">Videos</h2>
+
+<div class="video-row">
+
+<video src="videos/video1.mp4" onclick="openVideo(this.src)" muted></video>
+<video src="videos/video2.mp4" onclick="openVideo(this.src)" muted></video>
+
+</div>
+
+</section>
+
+<!-- IMAGE LIGHTBOX -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+<img id="modalImg">
+</div>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" class="modal" onclick="closeVideo()">
+<video id="modalVideo" controls autoplay></video>
+</div>
+
+<!-- CONTACT -->
+<!-- CONTACT -->
+<form id="form">
+
+<input name="name" type="text" placeholder="Full Name" required>
+<input name="phone" type="text" placeholder="Phone Number" required>
+<input name="email" type="email" placeholder="Email" required>
+
+<!-- CAR TYPE -->
+<select name="carType" required>
+<option value="">Car Type</option>
+<option value="Sedan">Sedan</option>
+<option value="SUV">SUV</option>
+<option value="Truck">Truck</option>
+</select>
+
+<!-- SERVICE TYPE -->
+<select name="serviceType" required>
+<option value="">Service Type</option>
+<option value="Interior Detail">Interior Detail</option>
+<option value="Exterior Detail">Exterior Detail</option>
+<option value="Full Detail">Full Detail</option>
+</select>
+
+<!-- DATE -->
+<input name="date" type="date" required>
+
+<!-- TIME -->
+<input name="time" type="time" required>
+
+<h4>Add-ons</h4>
+
+<div class="addons-box">
+<label><input type="checkbox" value="Pet Hair Removal"> Pet Hair Removal</label>
+<label><input type="checkbox" value="Odor Removal"> Odor Removal</label>
+<label><input type="checkbox" value="Clay Bar"> Clay Bar</label>
+<label><input type="checkbox" value="Headlight Restoration"> Headlight Restoration</label>
+<label><input type="checkbox" value="Wax Protection"> Wax Protection</label>
+</div>
+
+<textarea name="message" placeholder="Extra Notes"></textarea>
+
+<button type="submit">Book Appointment</button>
+
+</form> 
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
+<!-- IMAGE MODAL -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+<img id="modalImg">
+</div>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" class="modal" onclick="closeVideo()">
+<video id="modalVideo" controls autoplay></video>
+</div>
