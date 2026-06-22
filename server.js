@@ -1,5 +1,4 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
 const nodemailer = require("nodemailer");
 const path = require("path");
 require("dotenv").config();
@@ -13,131 +12,92 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-/* =========================
-   DATABASE SETUP
-========================= */
-const db = new sqlite3.Database("./database.db");
-
-db.serialize(() => {
-db.run(`
-CREATE TABLE IF NOT EXISTS bookings (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
-phone TEXT,
-email TEXT,
-carType TEXT,
-serviceType TEXT,
-date TEXT,
-time TEXT,
-addons TEXT,
-message TEXT
-)
-`);
+/* LOG REQUESTS */
+app.use((req, res, next) => {
+  console.log("🔥", req.method, req.url);
+  next();
 });
 
 /* =========================
-   TEST ROUTE (IMPORTANT)
+   HEALTH CHECK
 ========================= */
 app.get("/test", (req, res) => {
-res.send("SERVER WORKING");
+  res.send("OK");
+});
+
+/* =========================
+   EMAIL TRANSPORT
+========================= */
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
+/* VERIFY EMAIL ON START */
+transporter.verify((err) => {
+  if (err) {
+    console.log("❌ EMAIL FAILED:", err);
+  } else {
+    console.log("📧 Gmail ready");
+  }
 });
 
 /* =========================
    BOOKING ROUTE
 ========================= */
 app.post("/book", (req, res) => {
+  console.log("📩 BOOKING RECEIVED:", req.body);
 
-const {
-name,
-phone,
-email,
-carType,
-serviceType,
-date,
-time,
-addons,
-message
-} = req.body;
+  transporter.sendMail(
+    {
+      from: `G-Details <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: "🚗 New G-Details Booking",
+      html: `
+        <h2>New Booking Received</h2>
 
-/* SAVE TO DB */
-db.run(`
-INSERT INTO bookings 
-(name, phone, email, carType, serviceType, date, time, addons, message)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-`,
-[name, phone, email, carType, serviceType, date, time, addons, message]
-);
+        <p><strong>Name:</strong> ${req.body.name || ""}</p>
+        <p><strong>Phone:</strong> ${req.body.phone || ""}</p>
+        <p><strong>Email:</strong> ${req.body.email || ""}</p>
 
-/* EMAIL */
-const transporter = nodemailer.createTransport({
-service: "gmail",
-auth: {
-user: process.env.EMAIL_USER,
-pass: process.env.EMAIL_PASS
-}
-});
+        <p><strong>Car Type:</strong> ${req.body.carType || ""}</p>
+        <p><strong>Service:</strong> ${req.body.serviceType || ""}</p>
 
-transporter.sendMail({
-from: "G-DETAILS",
-to: process.env.EMAIL_USER,
-subject: "🚗 New Booking",
-html: `
-<h2>New Booking</h2>
+        <p><strong>Date:</strong> ${req.body.date || ""}</p>
+        <p><strong>Time:</strong> ${req.body.time || ""}</p>
 
-<p><b>Name:</b> ${name}</p>
-<p><b>Phone:</b> ${phone}</p>
-<p><b>Email:</b> ${email}</p>
+        <p><strong>Addons:</strong> ${req.body.addons || ""}</p>
 
-<hr>
+        <p><strong>Message:</strong></p>
+        <p>${req.body.message || ""}</p>
+      `
+    },
+    (err, info) => {
+      if (err) {
+        console.log("❌ EMAIL ERROR:", err);
+        return res.json({
+          success: false,
+          error: err.message
+        });
+      }
 
-<p><b>Car:</b> ${carType}</p>
-<p><b>Service:</b> ${serviceType}</p>
+      console.log("📧 SENT:", info.response);
 
-<p><b>Date:</b> ${date}</p>
-<p><b>Time:</b> ${time}</p>
-
-<hr>
-
-<p><b>Add-ons:</b><br>${addons}</p>
-
-<p><b>Message:</b> ${message}</p>
-`
-});
-
-res.json({ success: true });
+      res.json({
+        success: true
+      });
+    }
+  );
 });
 
 /* =========================
-   GET BOOKINGS (ADMIN FIX)
-========================= */
-app.get("/api/bookings", (req, res) => {
-db.all("SELECT * FROM bookings ORDER BY id DESC", (err, rows) => {
-if (err) {
-console.log("DB ERROR:", err);
-return res.json([]);
-}
-res.json(rows);
-});
-});
-
-/* =========================
-   DELETE BOOKING (ADMIN)
-========================= */
-app.delete("/api/bookings/:id", (req, res) => {
-db.run("DELETE FROM bookings WHERE id = ?", [req.params.id], (err) => {
-if (err) {
-console.log(err);
-return res.json({ success: false });
-}
-res.json({ success: true });
-});
-});
-
-/* =========================
-   START SERVER
+   START SERVER (IMPORTANT FOR RENDER)
 ========================= */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
