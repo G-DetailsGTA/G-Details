@@ -1,33 +1,23 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
-const path = require("path");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 
-/* =========================
-   MIDDLEWARE
-========================= */
+/* MIDDLEWARE */
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
-/* LOG REQUESTS */
-app.use((req, res, next) => {
-  console.log("🔥", req.method, req.url);
-  next();
+console.log("🔥 SERVER STARTING...");
+
+/* TEST ROUTE */
+app.get("/", (req, res) => {
+  res.send("G-Details API Running");
 });
 
-/* =========================
-   HEALTH CHECK
-========================= */
-app.get("/test", (req, res) => {
-  res.send("OK");
-});
-
-/* =========================
-   EMAIL TRANSPORT
-========================= */
+/* EMAIL SETUP */
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -36,7 +26,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-/* VERIFY EMAIL ON START */
 transporter.verify((err) => {
   if (err) {
     console.log("❌ EMAIL FAILED:", err);
@@ -45,59 +34,33 @@ transporter.verify((err) => {
   }
 });
 
-/* =========================
-   BOOKING ROUTE
-========================= */
-app.post("/book", (req, res) => {
+/* BOOKING ROUTE */
+app.post("/book", async (req, res) => {
   console.log("📩 BOOKING RECEIVED:", req.body);
 
-  transporter.sendMail(
-    {
-      from: `G-Details <${process.env.EMAIL_USER}>`,
+  try {
+    await transporter.sendMail({
+      from: `"G-Details" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      subject: "🚗 New G-Details Booking",
+      subject: "New Booking",
       html: `
-        <h2>New Booking Received</h2>
-
-        <p><strong>Name:</strong> ${req.body.name || ""}</p>
-        <p><strong>Phone:</strong> ${req.body.phone || ""}</p>
-        <p><strong>Email:</strong> ${req.body.email || ""}</p>
-
-        <p><strong>Car Type:</strong> ${req.body.carType || ""}</p>
-        <p><strong>Service:</strong> ${req.body.serviceType || ""}</p>
-
-        <p><strong>Date:</strong> ${req.body.date || ""}</p>
-        <p><strong>Time:</strong> ${req.body.time || ""}</p>
-
-        <p><strong>Addons:</strong> ${req.body.addons || ""}</p>
-
-        <p><strong>Message:</strong></p>
-        <p>${req.body.message || ""}</p>
+        <h2>New Booking</h2>
+        <p>${JSON.stringify(req.body, null, 2)}</p>
       `
-    },
-    (err, info) => {
-      if (err) {
-        console.log("❌ EMAIL ERROR:", err);
-        return res.json({
-          success: false,
-          error: err.message
-        });
-      }
+    });
 
-      console.log("📧 SENT:", info.response);
+    console.log("📧 EMAIL SENT");
+    res.json({ success: true });
 
-      res.json({
-        success: true
-      });
-    }
-  );
+  } catch (err) {
+    console.log("❌ EMAIL ERROR:", err);
+    res.json({ success: false, error: err.message });
+  }
 });
 
-/* =========================
-   START SERVER (IMPORTANT FOR RENDER)
-========================= */
+/* START SERVER (IMPORTANT FOR RENDER) */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("🚀 Running on port", PORT);
 });
