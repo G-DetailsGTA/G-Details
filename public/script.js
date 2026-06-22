@@ -22,8 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ).map(el => el.value).join(", ") || "None"
       };
 
-      console.log("📦 Payload:", payload);
-
       try {
         const res = await fetch("/book", {
           method: "POST",
@@ -33,62 +31,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await res.json();
 
-        console.log("📩 Response:", data);
-
-        if (res.ok && data.success) {
-          alert("✅ Booking sent successfully!");
+        if (data.success) {
+          alert("Booking sent successfully!");
           form.reset();
         } else {
-          alert("❌ Failed: " + (data.error || "Unknown error"));
+          alert("Failed: " + (data.error || "Unknown error"));
         }
 
       } catch (err) {
-        console.error(err);
-        alert("❌ Server not reachable");
+        alert("Server not reachable");
       }
     });
   }
 
-  /* =========================
-     IMAGE MODAL
-  ========================= */
-  window.openImg = function (src) {
-    const modal = document.getElementById("imgModal");
-    const img = document.getElementById("modalImg");
-    if (!modal || !img) return;
-
-    modal.style.display = "flex";
-    img.src = src;
-  };
-
-  window.closeModal = function () {
-    const modal = document.getElementById("imgModal");
-    const img = document.getElementById("modalImg");
-    if (modal) modal.style.display = "none";
-    if (img) img.src = "";
-  };
-
-  /* =========================
-     VIDEO MODAL
-  ========================= */
-  window.openVideo = function (src) {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("modalVideo");
-    if (!modal || !video) return;
-
-    modal.style.display = "flex";
-    video.src = src;
-    video.play();
-  };
-
-  window.closeVideo = function () {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("modalVideo");
-    if (modal) modal.style.display = "none";
-    if (video) {
-      video.pause();
-      video.src = "";
-    }
-  };
-
 });
+
+/* IMAGE MODAL */
+function openImg(src){
+  document.getElementById("imgModal").style.display = "flex";
+  document.getElementById("modalImg").src = src;
+}
+
+function closeModal(){
+  document.getElementById("imgModal").style.display = "none";
+}
+
+/* VIDEO MODAL */
+function openVideo(src){
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("modalVideo");
+  modal.style.display = "flex";
+  video.src = src;
+  video.play();
+}
+
+function closeVideo(){
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("modalVideo");
+  modal.style.display = "none";
+  video.pause();
+  video.src = "";
+}

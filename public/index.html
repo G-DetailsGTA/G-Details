@@ -24,7 +24,7 @@ gtag('config', 'AW-18224384234');
 <section class="hero">
 
 <video autoplay muted loop playsinline class="bg-video">
-<source src="videos/video1.mp4">
+<source src="videos/video1.mp4" type="video/mp4">
 </video>
 
 <div class="overlay"></div>
@@ -39,7 +39,6 @@ gtag('config', 'AW-18224384234');
 <a href="#services">Services</a>
 <a href="#gallery">Gallery</a>
 <a href="#contact">Book</a>
-<a href="admin.html">Admin</a>
 </nav>
 </header>
 
@@ -58,14 +57,9 @@ gtag('config', 'AW-18224384234');
 
 <div class="cards">
 
-<!-- INTERIOR -->
 <div class="glass">
-
 <h3>Interior / Deep Interior</h3>
-
 <p class="price">Sedan $145 | SUV $165 | Truck $185</p>
-
-<h4>Includes</h4>
 <ul>
 <li>Full Vacuum</li>
 <li>Interior Wipe Down</li>
@@ -77,54 +71,42 @@ gtag('config', 'AW-18224384234');
 <li>Pet Hair Removal</li>
 <li>Odor Removal (Ozone)</li>
 </ul>
-
 </div>
 
-<!-- EXTERIOR -->
 <div class="glass">
-
 <h3>Exterior Detail</h3>
-
 <p class="price">Sedan $90 | SUV $105 | Truck/Van $120</p>
-
-<h4>Includes</h4>
 <ul>
 <li>Rim Detail</li>
 <li>Tire Shine</li>
 <li>2 Bucket Hand Wash</li>
 <li>Window Cleaning</li>
 </ul>
-
 </div>
 
 </div>
 
-<!-- ADD ONS SECTION -->
+<!-- ADD ONS -->
 <div class="addons-section">
 
 <h2 class="title">Add-On Services</h2>
 
 <div class="addons">
-
 <span>Pet Hair Removal — from $25</span>
 <span>Odor Removal — from $65/hr</span>
 <span>Clay Bar Treatment — from $40</span>
 <span>Headlight Restoration — from $45</span>
 <span>Wax Protection — from $35</span>
-
 </div>
 
 </div>
 
 <!-- AREAS -->
 <div class="areas">
-
 <h2 class="title">Service Areas</h2>
-
 <p>
 Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton • Pickering • Bolton • Hamilton • King City • Aurora
 </p>
-
 </div>
 
 </section>
@@ -134,47 +116,31 @@ Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton �
 
 <h2 class="title">Gallery</h2>
 
-<!-- IMAGES -->
 <div class="gallery-grid">
-
 <img src="images/car1.jpg" onclick="openImg(this.src)">
 <img src="images/car2.jpg" onclick="openImg(this.src)">
 <img src="images/car3.jpg" onclick="openImg(this.src)">
 <img src="images/car4.jpg" onclick="openImg(this.src)">
-
 </div>
 
-<!-- VIDEOS -->
 <h2 class="title">Videos</h2>
 
 <div class="video-row">
-
 <video src="videos/video1.mp4" onclick="openVideo(this.src)" muted></video>
 <video src="videos/video2.mp4" onclick="openVideo(this.src)" muted></video>
-
 </div>
 
 </section>
 
-<!-- IMAGE LIGHTBOX -->
-<div id="imgModal" class="modal" onclick="closeModal()">
-<img id="modalImg">
-</div>
-
-<!-- VIDEO MODAL -->
-<div id="videoModal" class="modal" onclick="closeVideo()">
-<video id="modalVideo" controls autoplay></video>
-</div>
-
 <!-- CONTACT -->
-<!-- CONTACT -->
+<section id="contact" class="section">
+
 <form id="form">
 
 <input name="name" type="text" placeholder="Full Name" required>
 <input name="phone" type="text" placeholder="Phone Number" required>
 <input name="email" type="email" placeholder="Email" required>
 
-<!-- CAR TYPE -->
 <select name="carType" required>
 <option value="">Car Type</option>
 <option value="Sedan">Sedan</option>
@@ -182,7 +148,6 @@ Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton �
 <option value="Truck">Truck</option>
 </select>
 
-<!-- SERVICE TYPE -->
 <select name="serviceType" required>
 <option value="">Service Type</option>
 <option value="Interior Detail">Interior Detail</option>
@@ -190,13 +155,8 @@ Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton �
 <option value="Full Detail">Full Detail</option>
 </select>
 
-<!-- DATE -->
 <input name="date" type="date" required>
-
-<!-- TIME -->
 <input name="time" type="time" required>
-
-<h4>Add-ons</h4>
 
 <div class="addons-box">
 <label><input type="checkbox" value="Pet Hair Removal"> Pet Hair Removal</label>
@@ -210,18 +170,20 @@ Vaughan • Toronto • Richmond Hill • Etobicoke • Newmarket • Brampton �
 
 <button type="submit">Book Appointment</button>
 
-</form> 
+</form>
+
 </section>
 
-<script src="script.js"></script>
-</body>
-</html>
-<!-- IMAGE MODAL -->
+<!-- MODALS (ONLY ONCE - FIXED) -->
 <div id="imgModal" class="modal" onclick="closeModal()">
 <img id="modalImg">
 </div>
 
-<!-- VIDEO MODAL -->
 <div id="videoModal" class="modal" onclick="closeVideo()">
 <video id="modalVideo" controls autoplay></video>
 </div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
