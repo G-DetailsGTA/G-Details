@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const res = await fetch("/book", {
+        const res = await fetch("https://g-details.onrender.com/book", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await res.json();
 
-        if (data.success) {
+        if (res.ok && data.success) {
           alert("Booking sent successfully!");
           form.reset();
         } else {
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
       } catch (err) {
+        console.error(err);
         alert("Server not reachable");
       }
     });
@@ -48,18 +49,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* IMAGE MODAL */
 function openImg(src){
-  document.getElementById("imgModal").style.display = "flex";
-  document.getElementById("modalImg").src = src;
+  const modal = document.getElementById("imgModal");
+  const img = document.getElementById("modalImg");
+  if (!modal || !img) return;
+
+  modal.style.display = "flex";
+  img.src = src;
 }
 
 function closeModal(){
-  document.getElementById("imgModal").style.display = "none";
+  const modal = document.getElementById("imgModal");
+  const img = document.getElementById("modalImg");
+
+  if (modal) modal.style.display = "none";
+  if (img) img.src = "";
 }
 
 /* VIDEO MODAL */
 function openVideo(src){
   const modal = document.getElementById("videoModal");
   const video = document.getElementById("modalVideo");
+  if (!modal || !video) return;
+
   modal.style.display = "flex";
   video.src = src;
   video.play();
@@ -68,7 +79,10 @@ function openVideo(src){
 function closeVideo(){
   const modal = document.getElementById("videoModal");
   const video = document.getElementById("modalVideo");
-  modal.style.display = "none";
-  video.pause();
-  video.src = "";
+
+  if (modal) modal.style.display = "none";
+  if (video) {
+    video.pause();
+    video.src = "";
+  }
 }
